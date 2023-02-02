@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- Component CSS -->
+    <style>
+    </style>
+    <!-- /Component CSS -->
+    <!-- Head HTML -->
+    <!-- /Head HTML -->
+    <script>
+      var simplyDataApi = {};
+      var simplyApp = {};
+      window.addEventListener("simply-content-loaded", function() {
+        simply.bind = false;
+        /* Raw API */
+        var simplyRawApi = {
+          url : "/api/",
+          headers : {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          encodeGetParams : function(params) {
+            if (!params) {
+              return "";
+            }
+            return Object.entries(params).map(function(keyvalue) {
+              return "?" + keyvalue.map(encodeURIComponent).join("=")
+            }).join("&");
+          },
+          get : function(endpoint, params={}) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/" + simplyRawApi.encodeGetParams(params), {
+              mode : 'cors',
+              headers: this.headers
+            });
+          },
+          post : function(endpoint, params={}) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/", {
+              mode : 'cors',
+              headers: this.headers,
+              method: "POST",
+              body: JSON.stringify(params, null, "\t")
+            });
+          },
+          postRaw : function(endpoint, params={}, body) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/", {
+              mode : 'cors',
+              headers: this.headers,
+              method: "POST",
+              body: body
+            });
+          },
+          put : function(endpoint, params={}) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/", {
+              mode: 'cors',
+              headers: this.headers,
+              method: "PUT",
+              body: JSON.stringify(params, null, "\t")
+            });
+          },
+          putRaw : function(endpoint, params={}, body) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/", {
+              mode: 'cors',
+              headers: this.headers,
+              method: "PUT",
+              body: body
+            });
+          },
+          delete : function(endpoint, params={}) {
+            if (!params.token && editor.pageData.token) {
+              params.token = editor.pageData.token;
+            }
+            if (params.token) {
+              this.headers['Authorization'] = "Bearer " + params.token;
+              delete params.token;
+            } else {
+              delete this.headers.Authentication;
+            }
+            return fetch(simplyRawApi.url + endpoint + "/" + simplyRawApi.encodeGetParams(params), {
+              mode : 'cors',
+              headers: this.headers,
+              method: "DELETE"
+            });
+          }
+        };
+        /* End of Raw API */
+        /* Data API */
+        simplyDataApi = {
+        };
+        /* End of Data API */
+        simplyApp = simply.app({
+          /* Actions */
+          actions: {
+          },
+          /* /Actions */
+          /* Commands */
+          commands: {
+          },
+          /* /Commands */
+          /* Routes */
+          routes: {
+            "/" : function() {
+              editor.pageData.page = "home";
+            }
+          }
+          /* /Routes */
+        });
+        function clone(ob) {
+          return JSON.parse(JSON.stringify(ob));
+        }
+        function updateDataSource(name) {
+          document.querySelectorAll('[data-simply-data="'+name+'"]').forEach(function(list) {
+            editor.list.applyDataSource(list, name);
+            list.dataBindingPaused = 0;
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Body HTML -->
+    <!-- /Body HTML -->
+    <!-- Component HTML templates -->
+    <!-- /Component HTML templates -->
+      <nav>
+        <div is="simply-component" rel="menu"></div>
+      </nav>
+      <div class="main" data-simply-field="page" data-simply-content="template">
+    <!-- Page HTML templates -->
+    <template data-simply-template="home">
+        <h1>Simply Code Skeleton</h1>
+    </template>
+    <!-- /Page HTML templates -->
+    </div>
+    <script src="/js/simply.everything.js"></script>
+    <script src="/js/simply-edit.js" data-api-key="muze"></script>
+    <script>
+      /* Transformers */
+      editor.transformers = {
+      };
+      /* /Transformers */
+    </script>
+    <script>
+      // load sorters
+    </script>
+              <script>
+          window.addEventListener("simply-content-loaded", function() {
+            /* Data sources */
+      
+      
+      
+      
+                  /* /Data sources */
+          });
+        </script>
+      
+    <!-- Foot HTML -->
+    <!-- /Foot HTML -->
+  </body>
+</html>
+  

@@ -11,7 +11,7 @@ change the owner and group to www-data of the directories:
 - www/api/data
 
 ## Usage of this skeleton
-When cloning this repo, you want to remove the remote origin by doing the following: `git remote rm origin`. 
+When cloning this repo, you want to remove the remote origin by removing the .git/ directory and creating a new .git with `git init` .
 
 This will ensure that you won't push any changes to your new project in this repository.
 

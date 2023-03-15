@@ -1,0 +1,83 @@
+<style>
+:root {
+    --ds-dropdown-background: white;
+    --ds-dropdown-width: 200px;
+    --ds-shadow-light: rgba(0,0,0,0.07);
+    --ds-shadow-middle: rgba(0,0,0,0.09);
+    --ds-shadow-dark: rgba(0,0,0,0.11);
+    --ds-shadow-tiny: 
+        0 1px 1px var(--ds-shadow-dark)
+    ;
+    --ds-shadow-small: 
+        0 1px 1px var(--ds-shadow-dark),
+        0 2px 2px var(--ds-shadow-middle),
+        0 4px 4px var(--ds-shadow-light)
+    ;
+    --ds-shadow-medium: 
+        0 1px 1px var(--ds-shadow-middle),
+        0 2px 2px var(--ds-shadow-middle),
+        0 4px 4px var(--ds-shadow-middle),
+        0 6px 8px var(--ds-shadow-middle),
+        0 8px 16px var(--ds-shadow-middle)
+    ;
+    --ds-shadow-large: 
+        0 2px 1px var(--ds-shadow-light),
+        0 4px 2px var(--ds-shadow-light),
+        0 8px 4px var(--ds-shadow-light),
+        0 16px 8px var(--ds-shadow-light),
+        0 32px 16px var(--ds-shadow-light) 
+    ;
+    --ds-box-radius: 3px;
+}
+.ds-dropdown {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-shadow: none;
+}
+.ds-dropdown-nav {
+    width: var(--ds-dropdown-width);
+    background: var(--ds-dropdown-background);
+    display: none;
+    position: absolute;
+    box-shadow: var(--ds-shadow-medium);
+    border-radius: var(--ds-box-radius);
+    bottom: 100px;
+    right: 60px;
+    padding: 1em;
+    z-index: 1000000;
+}
+.ds-dropdown-nav::before {
+    content: "";
+    display: block;
+    width: 0.5rem; 
+    height: 0.5rem;
+    background: var(--ds-dropdown-background);
+    position: absolute;
+    clip-path: polygon(-2px 0.6rem, -2px -2px, 0.6rem -2px);
+    right: 0.5rem;
+    transform: rotate(-135deg);
+    bottom: -0.2rem;
+    filter: drop-shadow(1px 1px 2px #000);
+}
+.ds-dropdown-state {
+    display: none;  
+}
+.ds-dropdown-state:checked ~ .ds-dropdown-nav {
+    display: block;
+}
+.ds-dropdown-list {
+    list-style: none;
+    margin: 0;
+    padding: calc(0.25 * var(--ds-spacing)) calc(0.5 * var(--ds-spacing));
+}
+.ds-dropdown-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.ds-dropdown-item:hover {
+    color: #009c55;
+}
+</style>

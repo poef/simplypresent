@@ -1,0 +1,22 @@
+<script>
+document.body.addEventListener('keydown', function(evt) {
+  if (document.body.hasAttribute('data-simply-edit')) {
+    // don't move slides with keys while in edit mode
+    return;
+  }
+  switch(evt.code) {
+    case 'PageUp':
+    case 'ArrowUp':
+    case 'ArrowLeft':
+      evt.preventDefault();
+      return simplyApp.commands.call('prev');
+    break;
+    case 'PageDown':
+    case 'ArrowDown':
+    case 'ArrowRight':
+      evt.preventDefault();
+      return simplyApp.commands.call('next');
+    break;
+  }
+});
+</script>

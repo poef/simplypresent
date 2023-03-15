@@ -1,0 +1,64 @@
+<script>
+  document.addEventListener('simply-content-loaded', function() {
+
+    if (!localStorage.getItem('SimplyPresentHelper')) {
+        var checkHelper = function() {
+            if ( location.hash == '#simply-edit' || location.hash == '#present') {
+               localStorage.setItem('SimplyPresentHelper',true);
+               simplyApp.actions.hideHelper();
+            } 
+        };
+        window.addEventListener('hashchange', checkHelper);
+        checkHelper();
+    } else {
+        if ( location.hash == '#simply-edit' || location.hash == '#present') {
+            return;
+        }
+        var helper = localStorage.getItem('SimplyPresentHelper');
+        if ( typeof helper != 'object' ) {
+            helper = {
+                x: -50,
+                y: -50
+            };
+        }
+        var helperButton = document.getElementById('SimplyPresentButton');
+        if ( helper.x<0 ) {
+          helperButton.style.right = -helper.x+'px';
+        } else {
+          helperButton.style.left = helper.x+'px';
+        }
+        if ( helper.y<0 ) {
+          helperButton.style.bottom = -helper.y+'px';
+        } else { 
+          helperButton.style.top = helper.y+'px';
+        }
+        simplyApp.actions.showHelper();
+        var timer = null;
+        helperButton.onmousedown = 
+        helperButton.ontouchstart = function() {
+            timer = window.setTimeout(function() {
+                // remove helperButton
+                localStorage.removeItem('SimplyPresentHelper');
+                simplyApp.actions.hideHelper()
+            }, 1000);
+        };
+        helperButton.onmouseup =
+        helperButton.ontouchend = function() {
+            if ( timer ) {
+                window.clearTimeout(timer);
+            }
+        };
+        helperButton.onmouseover =
+        helperButton.onfocus = function() {
+            helperButton.style.opacity = 1;
+        };
+        helperButton.onmouseout =
+        helperButton.onblur = function() { 
+            helperButton.style.opacity = 0.5;
+            if ( timer ) {
+                window.clearTimeout(timer);
+            }
+        };
+    }
+});
+</script>

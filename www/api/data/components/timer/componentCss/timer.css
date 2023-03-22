@@ -1,0 +1,55 @@
+.hidden {
+	display: none;
+}
+.slides-timer-slides {
+	display: flex;
+	width: 100%;
+	list-style: none;
+	margin: 0;
+	padding: 1px;
+	margin-top: 4em;
+	border: 1px solid black;
+}
+.slides-timer-slide {
+	display: block;
+	padding: 0;
+	background-color: #CCC;
+	height: 2em;
+	outline: 1px solid white;
+	flex: 1;
+	xvisibility: hidden;
+}
+.slides-timer-slide.slides-timer-current {
+	xvisibility: visible;
+	background-color: green;
+}
+.slides-timer-time input {
+	display: block;
+	appearance: none;
+	border: 0;
+	font-size: 2em;
+	text-align:right;
+	width: 6em;
+}
+.slides-timer-time {
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align:right;
+}
+.slides-timer-slide .slides-timer-time {
+	right: auto;
+	left: 0;
+	text-align:left;
+}
+.slides-timer-slide .slides-timer-time input {
+	text-align:left;
+}
+.slides-timer-cursor {
+	position: absolute;
+	height: 2em;
+	margin-top: calc(-2em - 2px);
+	border-left: 2px solid red;
+	left: 0;
+	z-index:10;
+}

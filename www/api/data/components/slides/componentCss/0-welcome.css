@@ -6,12 +6,12 @@
   background: -webkit-linear-gradient(top, #eeeeee 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom, #eeeeee 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
-main.slides .welcome-slide {
+.slides-present .welcome-slide {
   display: none;
 }
-main.slides.simply-empty .welcome-slide {
+.slides-present.simply-empty .welcome-slide {
   display: grid;
 }
-body[data-simply-edit] main.slides .welcome-slide {
+body[data-simply-edit] .slides-present .welcome-slide {
   display: none;
 }

@@ -184,6 +184,13 @@
       .text-middle > * {
       	margin: 0.25em 0;
       }
+      .text-content {
+      	padding: 2.2375em;
+      }
+      .text-content *:first-child {
+      	margin-top: 0;
+      }
+      
       /* 3-portrait */
       @media (orientation: portrait) {
       	.slides {
@@ -319,15 +326,6 @@
       	background: var(--highlight-background);
       	color: var(--highlight-color);
       }
-      
-      .text-content {
-      	padding: 2.2375em;
-      	max-width: 50em;
-      }
-      .text-content *:first-child {
-      	margin-top: 0;
-      }
-      
       /* image-styles */
       img.contain {
         object-fit: contain;
@@ -923,12 +921,12 @@
     </template>
     <template id="grid">
       <section class="slide slide-grid">
-        <img class="logo logo-white" src="img/logo-white.svg" alt="{witty tents}">
+        <img class="logo logo-white" src="img/logo-white.svg" alt="{logo}">
         <div class="text-content background-highlight text-middle text-center">
           <i class="icon fa" data-simply-field="icon"></i>
           <h2 data-simply-field="title">title</h2>
         </div>
-        <img data-simply-field="image" class="placeholder cover" src="img/placeholder.jpg">
+        <img alt="placeholder" data-simply-field="image" class="placeholder cover" src="img/placeholder.jpg">
         <div class="text-content" data-simply-field="text">
         </div>
         <div class="text-content background-grey" data-simply-field="more-text">
@@ -957,6 +955,15 @@
         </div>
       </section>
     </template>
+    <template id="title">
+      <section class="slide background-highlight">
+        <div class="text-content text-center text-middle">
+          <img class="center max50 logo-white" src="img/logo-white.svg" alt="{logo}">
+          <h1 data-simply-field="title">title</h1>
+          <div data-simply-field="text">text</div>
+        </div>
+      </section>
+    </template>
     <template id="slides">
       <div class="slides slides-present" data-simply-list="slides" data-simply-sortable>
         <div is="simply-component" rel="welcome-slide"></div>
@@ -967,15 +974,6 @@
         <template data-simply-template="columns" rel="columns"></template>
         <template data-simply-template="full" rel="full"></template>
       </div>
-    </template>
-    <template id="title">
-      <section class="slide background-highlight">
-        <div class="text-content text-center text-middle">
-          <img class="center max50 logo-white" src="img/logo-white.svg" alt="{logo}">
-          <h1 data-simply-field="title">title</h1>
-          <div data-simply-field="text">text</div>
-        </div>
-      </section>
     </template>
     <template id="welcome-slide">
       <section class="slide slide-columns">

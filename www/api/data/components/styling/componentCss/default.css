@@ -81,11 +81,3 @@ img {
 	background: var(--highlight-background);
 	color: var(--highlight-color);
 }
-
-.text-content {
-	padding: 2.2375em;
-	max-width: 50em;
-}
-.text-content *:first-child {
-	margin-top: 0;
-}

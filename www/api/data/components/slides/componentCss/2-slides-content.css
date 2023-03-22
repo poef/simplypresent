@@ -101,3 +101,9 @@ img.placeholder {
 .text-middle > * {
 	margin: 0.25em 0;
 }
+.text-content {
+	padding: 2.2375em;
+}
+.text-content *:first-child {
+	margin-top: 0;
+}

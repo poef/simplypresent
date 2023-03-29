@@ -5,5 +5,5 @@ async function() {
   }
   let max = document.querySelectorAll('main.slides .slide').length;
   slide = Math.min(max, slide+1)
-  return simplyApp.actions.goto(slide)
+  return simplyApp.actions.gotoSlide(slide)
 }

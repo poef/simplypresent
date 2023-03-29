@@ -4,5 +4,5 @@ async function() {
     slide = parseInt(window.location.hash.substr(7)) || 1
   }
   slide = Math.max(1, slide-1)
-  return simplyApp.actions.goto(slide)
+  return simplyApp.actions.gotoSlide(slide)
 }

@@ -1,0 +1,30 @@
+<script>
+  const slidesKeyboard = (() => {
+    function keyPrev() {
+      if (document.body.hasAttribute('data-simply-edit')) {
+        // don't move slides with keys while in edit mode
+        return;
+      }
+      return simplyApp.commands.prevSlide()
+    }
+
+    function keyNext() {
+      if (document.body.hasAttribute('data-simply-edit')) {
+        // don't move slides with keys while in edit mode
+        return;
+      }
+      return simplyApp.commands.nextSlide()
+    }
+
+    return {
+      default: {
+        PageUp: keyPrev,
+        ArrowUp: keyPrev,
+        ArrowLeft: keyPrev,
+        PageDown: keyNext,
+        ArrowDown: keyNext,
+        ArrowRight: keyNext
+      }
+    }
+  })()
+</script>

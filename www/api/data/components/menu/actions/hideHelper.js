@@ -1,7 +1,7 @@
 async function() {
-  var helper = document.getElementById('SimplyPresentButton');
+  var helper = document.getElementById('SimplyPresentButton')
   if (helper) {
-    helper.style.visibility = 'hidden';
-    helper.classList.remove('simply-visible');
+    helper.style.visibility = 'hidden'
+    helper.classList.remove('simply-visible')
   }
 }

@@ -1,27 +1,47 @@
+:root {
+  	--timer-border-size: 3px;
+    --timer-border-radius: 3px;
+    --timer-border-color: var(--support-dark);
+  	--timer-box-padding: 0.5em;
+    --timer-current-color: var(--support-dark);
+    --timer-cursor-color: var(--highlight-dark);
+    --timer-cursor-width: 4px;
+    --timer-padding: 2em;
+    --timer-bar-color: var(--grey-light);
+    --timer-cursor-marker-size: 10px;
+}
 .hidden {
 	display: none;
 }
+.slides-timer {
+    padding: var(--timer-padding);
+    position: relative;
+}
 .slides-timer-slides {
-	display: flex;
+	border: var(--timer-border-size) solid var(--timer-border-color);
+    box-sizing: border-block;
+    padding: var(--timer-box-padding);
+    display: flex;
 	width: 100%;
 	list-style: none;
 	margin: 0;
-	padding: 1px;
 	margin-top: 4em;
-	border: 1px solid black;
+    gap: 2px;
+    border-radius: var(--timer-border-radius);
+}
+.slides-timer-slides.simply-empty:before {
+  content: '';
+  height: 2em;  
 }
 .slides-timer-slide {
 	display: block;
 	padding: 0;
-	background-color: #CCC;
+	background-color: var(--timer-bar-color);
 	height: 2em;
-	outline: 1px solid white;
 	flex: 1;
-	xvisibility: hidden;
 }
 .slides-timer-slide.slides-timer-current {
-	xvisibility: visible;
-	background-color: green;
+	background-color: var(--timer-current-color);
 }
 .slides-timer-time input {
 	display: block;
@@ -33,13 +53,13 @@
 }
 .slides-timer-time {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: var(--timer-padding);
+	right: var(--timer-padding);
 	text-align:right;
 }
 .slides-timer-slide .slides-timer-time {
 	right: auto;
-	left: 0;
+	left: var(--timer-padding);
 	text-align:left;
 }
 .slides-timer-slide .slides-timer-time input {
@@ -48,8 +68,23 @@
 .slides-timer-cursor {
 	position: absolute;
 	height: 2em;
-	margin-top: calc(-2em - 2px);
-	border-left: 2px solid red;
-	left: 0;
+	margin-top: calc(-2em - var(--timer-border-size) - var(--timer-box-padding));
+    width: var(--timer-cursor-width);
+    background-color: var(--timer-cursor-color);
+	margin-left: calc(var(--timer-padding) + var(--timer-box-padding) + var(--timer-border-size));
 	z-index:10;
 }
+.slides-timer-cursor::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: calc(2em - 4px);
+    top: 0;
+  	border: var(--timer-cursor-marker-size) solid var(--timer-cursor-color);
+	border-right-color: transparent;
+	border-left-color: transparent;
+    margin-left: calc(2px - var(--timer-cursor-marker-size));
+	margin-top: calc(2px - var(--timer-cursor-marker-size));
+}
+

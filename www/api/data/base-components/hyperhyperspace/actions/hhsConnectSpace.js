@@ -7,11 +7,11 @@ async function(words) {
   await resources.store.save(ds)
   await ds.startSync()
   ds.addSyncCallback((newState) => {
-    this.app.actions.update(ds)
+    this.app.actions.hhsUpdateSpace(ds)
     ds.contents.addMutationOpCallback(() => {
-      this.app.actions.update(ds)
+      this.app.actions.hhsUpdateSpace(ds)
     })
   })
-  this.app.actions.update(ds)
+  this.app.actions.hhsUpdateSpace(ds)
   return ds
 }

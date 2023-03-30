@@ -7,6 +7,7 @@
 }
 .slides-presentor > div {
   background-color: white;
+  overflow:hidden;
 }
 .slides-presentor .left-main {
   grid-column: 1 / 3;

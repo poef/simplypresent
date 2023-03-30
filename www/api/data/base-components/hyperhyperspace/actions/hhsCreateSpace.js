@@ -3,7 +3,7 @@ async function() {
   let ds = new simplyHHS.DocumentSpace()
   let space = HHS.Space.fromEntryPoint(ds, resources)
   await space.entryPoint
-  editor.pageData.hhsWords = space.getWordCoding()
+  editor.pageData.hhsWords = await space.getWordCoding()
   editor.pageData.hhsCreator = editor.pageData.hhsWords
   ds = await space.getEntryPoint()
   ds.setResources(resources)
@@ -11,5 +11,6 @@ async function() {
   // await this.app.actions.hhsConnectSpace(editor.pageData.hhsWords)
   ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
   simplyHHS.ds = ds
+  console.log(document.location.origin + document.location.pathname + "#words/" + editor.pageData.hhsWords.join("/"))
   return editor.pageData.hhsWords
 }

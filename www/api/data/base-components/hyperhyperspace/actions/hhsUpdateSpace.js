@@ -1,5 +1,6 @@
 async function(ds) {
   let data = ds.getValue();
+  console.log(data)
   if (data) {
     data = JSON.parse(data);
     if (data.slide && !editor.pageData.creator) {

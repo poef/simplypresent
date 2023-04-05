@@ -6,50 +6,50 @@
     <style>
       /* menu */
       #SimplyPresentButton {
-          background-color: white;
-          border-radius: 50%;
-          width: 50px;
-          height: 50px;
-          box-sizing: border-box;
-          box-shadow: 1px 1px 5px #888;
-          position: fixed;
-          z-index: 999999;
-          opacity: 0.5;
-          cursor: pointer;
-          padding: 6px;
-          display: flex;
-          bottom: 50px;
-          right: 50px;
-          min-height: unset;
+        background-color: white;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 5px #888;
+        position: fixed;
+        z-index: 999998;
+        opacity: 0.5;
+        cursor: pointer;
+        padding: 6px;
+        display: flex;
+        bottom: 50px;
+        right: 50px;
+        min-height: unset;
       }
       #SimplyPresentButton:focus,
       #SimplyPresentButton:hover {
-          opacity: 1;
+        opacity: 1;
       }
       body[data-simply-edit] #SimplyPresentButton {
-          display: none;
+        display: none;
       }
       .simplyPresentLogo {
-          width: 46px;
-          margin-left: 1px;
+        width: 46px;
+        margin-left: 1px;
       }
       #SimplyPresentBackdrop {
-          position: fixed;
-          z-index: 999998;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
+        display: none;
+        position: fixed;
+        z-index: 999999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #SimplyPresentState:checked ~ #SimplyPresentBackdrop {
+        display: block;
       }
       /* share */
-      .simplypresent-share {
-        width: 70vw;
-        min-width: 500px;
-        max-width: 100%;
+      .simplypresent-sharing {
+        font-size: 0.6rem;
         padding: var(--ds-spacing);
-        margin: 0 auto;
       }
-      
       /* 0-welcome */
       .welcome-image {
         display: flex;
@@ -940,7 +940,7 @@
             initMenu : async function() {
               var checkHelper = function() {
                 if ( location.hash == '#simply-edit' || location.hash == '#present') {
-                  this.call('hideHelper')
+                  simplyApp.actions.hideHelper()
                 } 
               }
               window.addEventListener('hashchange', checkHelper)
@@ -967,7 +967,6 @@
             },
             share : async function() {
               this.app.actions.hhsCreateSpace()
-              document.getElementById('SimplyPresentShare').classList.add('visible');
             },
             gotoSlide : async function(slide) {
               if (slide===editor.pageData.slide) {
@@ -1089,7 +1088,9 @@
               this.app.actions.hideHelperMenu()
             },
             present : async function() {
-              if (simplyPresentConnection) {
+              document.location.hash = "#present"
+            /*
+            if (simplyPresentConnection) {
                 simplyPresentConnection.terminate();
                 simplyPresentConnection = null
                 document.body.removeAttribute('data-simply-present')
@@ -1098,10 +1099,16 @@
                 simplyPresentConnection = connection
                 document.body.setAttribute('data-simply-present',true)
               }
+            */
               this.app.actions.hideHelperMenu()
             },
             showMenu : async function() {
               this.app.actions.showHelperMenu()
+            },
+            copySharing : function(el) {
+              let shareLink = editor.transformers.wordsLink.render(editor.pageData.hhsWords)
+              navigator.clipboard.writeText(shareLink.href)
+              alert("The link is now in your clipboard!")
             },
             share : function(el) {
               this.app.actions.share()
@@ -1128,7 +1135,8 @@
           /* /Commands */
           /* Routes */
           routes: {
-            "#words/:word1/:word2/:word3" : function(params) {
+            "#words/:word1/:word2/:word3" : async function(params) {
+              await simplyApp.actions.start()
               simplyApp.actions.hhsConnectSpace([params.word1, params.word2, params.word3])
             },
             "#share" : function(params) {
@@ -1140,6 +1148,7 @@
             },
             "#present" : async function(params) {
               editor.pageData.page = "present"
+              editor.pageData.hhsWords = [];
               await simplyApp.actions.start()
               simplyApp.actions.gotoSlide(1)
             },
@@ -1332,7 +1341,7 @@
       <nav class="ds-dropdown-nav">
         <ul class="ds-dropdown-list">
           <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="present">Present</a></li>
-          <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="share">Share</a></li>
+          <!-- li><a class="ds-dropdown-item" tabindex="0" data-simply-command="share">Share</a></li -->
           <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="edit">Edit</a></li>
           <li class="ds-dropdown-divider"></li>
           <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="about">About</a></li>
@@ -1351,16 +1360,26 @@
       </div>
     </template>
     <template id="sharing">
-      <div class="ds-dialog-container">
-        <div id="SimplyPresentShare" class="simplypresent-share ds-box ds-dialog visible">
-          <a class="ds-box-close" data-simply-command="closeSharing">
-            <svg class="ds-icon ds-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-              <line x1="15" y1="15" x2="25" y2="25" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-miterlimit="10"></line>
-              <line x1="25" y1="15" x2="15" y2="25" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-miterlimit="10"></line>
-            </svg>
-          </a>
-          <button class="ds-button ds-button-default" data-simply-command="copySharing">Copy</button>
-          <a data-simply-field="hhsWords" data-simply-transformer="wordsLink"></a>
+      <div class="simplypresent-sharing">
+        <div
+             data-simply-field="hhsWords" 
+             data-simply-transformer="isShared"
+             data-simply-content="template"
+             data-simply-default-template="0"
+             data-simply-default-value="0"
+             >
+          <template data-simply-template="3">
+            <div>
+              <a data-simply-field="hhsWords" data-simply-transformer="wordsLink"></a>
+            </div>
+            <button class="ds-button ds-button-default" data-simply-command="copySharing">Copy</button>
+          </template>
+          <template data-simply-template="1">
+            <button class="ds-button ds-button-default" data-simply-command="share" >Start sharing</button> 
+          </template>
+          <template data-simply-template="0">
+            <button class="ds-button ds-button-default" data-simply-command="share" >Start sharing</button> 
+          </template>
         </div>
       </div>
     </template>
@@ -1471,7 +1490,6 @@
     </template>
     <!-- /Component HTML templates -->
     <div is="simply-component" rel="menu"></div>
-    <div is="simply-component" rel="sharing"></div>
     <main data-simply-field="page" data-simply-content="template">
     
     <!-- Page HTML templates -->
@@ -1511,12 +1529,20 @@
     <script>
       /* Transformers */
       editor.transformers = {
+      "isShared" : {
+        render : function(data) {
+            this.originalValue = data
+            return data.length
+          },
+        extract : function(data) {
+            return this.originalValue
+          }
+      },
       "wordsLink" : {
         render : function(data) {
            this.originalValue = data
            let value = document.location.origin + document.location.pathname + "#words/" + data.join("/")
            return { href: value, innerHTML: value }
-            
           },
         extract : function(data) {
             return this.originalValue

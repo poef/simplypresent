@@ -1,7 +1,4 @@
-.simplypresent-share {
-  width: 70vw;
-  min-width: 500px;
-  max-width: 100%;
+.simplypresent-sharing {
+  font-size: 0.6rem;
   padding: var(--ds-spacing);
-  margin: 0 auto;
 }

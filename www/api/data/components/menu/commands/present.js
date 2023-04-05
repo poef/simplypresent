@@ -1,5 +1,7 @@
 async function() {
-  if (simplyPresentConnection) {
+  document.location.hash = "#present"
+/*
+if (simplyPresentConnection) {
     simplyPresentConnection.terminate();
     simplyPresentConnection = null
     document.body.removeAttribute('data-simply-present')
@@ -8,5 +10,6 @@ async function() {
     simplyPresentConnection = connection
     document.body.setAttribute('data-simply-present',true)
   }
+*/
   this.app.actions.hideHelperMenu()
 }

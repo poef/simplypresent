@@ -1751,19 +1751,21 @@
     <!-- slidesKeyboard -->
     <script>
       const slidesKeyboard = (() => {
-        function keyPrev() {
+        function keyPrev(event) {
           if (document.body.hasAttribute('data-simply-edit')) {
             // don't move slides with keys while in edit mode
             return;
           }
+          event.preventDefault()
           return simplyApp.commands.prevSlide()
         }
     
-        function keyNext() {
+        function keyNext(e) {
           if (document.body.hasAttribute('data-simply-edit')) {
             // don't move slides with keys while in edit mode
             return;
           }
+          event.preventDefault()
           return simplyApp.commands.nextSlide()
         }
     

@@ -1,7 +1,8 @@
 async function() {
   function isScrolledIntoView(el) {
     var rect = el.getBoundingClientRect()
-    return (rect.left >= 0) && (rect.right <= window.innerWidth)
+    var parentRect = el.parentNode.getBoundingClientRect()
+    return (rect.left >= parentRect.left) && (rect.right <= parentRect.right)
   }
 
   function throttle( callbackFunction, intervalTime ) {

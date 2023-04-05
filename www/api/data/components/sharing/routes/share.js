@@ -1,3 +1,3 @@
 function(params) {
-  simplyApp.actions.hhsCreateSpace()
+  simplyApp.actions.share()
 }

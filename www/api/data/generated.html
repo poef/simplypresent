@@ -20,7 +20,9 @@
           display: flex;
           bottom: 50px;
           right: 50px;
+          min-height: unset;
       }
+      #SimplyPresentButton:focus,
       #SimplyPresentButton:hover {
           opacity: 1;
       }
@@ -31,6 +33,23 @@
           width: 46px;
           margin-left: 1px;
       }
+      #SimplyPresentBackdrop {
+          position: fixed;
+          z-index: 999998;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+      }
+      /* share */
+      .simplypresent-share {
+        width: 70vw;
+        min-width: 500px;
+        max-width: 100%;
+        padding: var(--ds-spacing);
+        margin: 0 auto;
+      }
+      
       /* 0-welcome */
       .welcome-image {
         display: flex;
@@ -489,7 +508,26 @@
     <!-- ds-css -->
     <style>
     :root {
-        --ds-dropdown-background: white;
+        --ds-spacing: 1em;
+        --ds-font-size: calc(1.25 * 1rem);
+        --ds-font-weight: 300;
+        --ds-line-height: calc(1.6 * var(--ds-font-size));
+        --ds-input-border: var(--grey-light);
+        --ds-input-spacing: var(--ds-spacing);
+        --ds-button-spacing: calc(0.5 * var(--ds-input-spacing));
+        --ds-button-bg-color: var(--grey-light);
+        --ds-button-default-bg-color: var(--ds-white);
+        --ds-button-border-color: var(--grey-light);
+        --ds-button-disabled-color: var(--grey-medium);
+        --ds-button-disabled-bg-color: var(--ds-white);
+        --ds-button-primary-bg-color: var(--primary);
+        --ds-button-primary-color: var(--primary-contrast);
+        --ds-button-primary-border-color: var(--primary);
+        --ds-button-line-height: calc(var(--ds-line-height) * 1.5);
+        --ds-button-shadow: var(--ds-shadow-tiny);
+        --ds-button-shadow-hover: var(--ds-shadow-small);
+        --ds-button-radius: 3px;
+       --ds-dropdown-background: white;
         --ds-dropdown-width: 200px;
         --ds-shadow-light: rgba(0,0,0,0.07);
         --ds-shadow-middle: rgba(0,0,0,0.09);
@@ -517,6 +555,131 @@
             0 32px 16px var(--ds-shadow-light) 
         ;
         --ds-box-radius: 3px;
+    
+    }
+    :root .ds-button {
+        line-height: var(--ds-button-line-height);
+        min-height: var(--ds-button-line-height);
+    }
+    .ds-button {
+        margin: 0 var(--ds-button-spacing) var(--ds-button-spacing) 0;
+        overflow: visible;
+        font: inherit;
+        color: inherit;
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0 calc(0.5 * var(--ds-line-height));
+        vertical-align: middle;
+        font-size: calc(0.875 * var(--ds-font-size));
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        background-color: var(--ds-button-bg-color);
+        outline: 1px solid var(--ds-button-border-color);
+        border: 0;
+        white-space: nowrap;
+        box-shadow: var(--ds-button-shadow);
+        border-radius: var(--ds-button-radius);
+    }
+    .ds-button::-moz-focus-inner {
+        border: 0;
+    }
+    .ds-button:hover,
+    .ds-button:focus {
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: var(--ds-button-shadow-hover);
+    }
+    a.ds-button,
+    a.ds-button:hover,
+    a.ds-button:active,
+    a.ds-button:visited {
+        color: inherit;
+    }
+    .ds-button-default {
+        background-color: var(--ds-button-default-bg-color);
+    }
+    a.ds-button-primary, a.ds-button-primary:hover,
+    a.ds-button-primary:active, a.ds-button-primary:visited,
+    .ds-button-primary, .ds-button-primary:hover {
+        background-color: var(--ds-button-primary-bg-color);
+        color: var(--ds-button-primary-color);
+        border-color: var(--ds-button-primary-border-color);
+    }
+    a.ds-button-support, a.ds-button-support:hover,
+    a.ds-button-support:active, a.ds-button-support:visited,
+    .ds-button-support, .ds-button-support:hover {
+        background-color: var(--ds-button-support-bg-color);
+        color: var(--ds-button-support-color);
+        border-color: var(--ds-button-support-border-color);
+    }
+    .ds-button:disabled {
+        background-color: var(--ds-button-disabled-bg-color);
+        color: var(--ds-button-disabled-color);
+    }
+    .ds-button:disabled:hover {
+        cursor: not-allowed;
+        box-shadow: 0 0 0;
+    }
+    .ds-button-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .ds-button-light {
+        background: none;
+        outline: 0;
+        padding: 0;
+    }
+    .ds-button-naked {
+        background: none;
+        outline: 0;
+    }
+    .ds-button-close {
+        position: absolute;
+        right: var(--ds-spacing);
+        margin: 0;
+    }
+    
+    .ds-button-grow {
+        display: block;
+        width: 100%;
+    }
+    .ds-icon {
+        display: inline-block;
+        height: var(--ds-line-height);
+        width: 1em;
+        vertical-align: bottom;
+    }
+    .ds-button .ds-icon {
+        height: var(--ds-button-line-height);
+    }
+    
+    .ds-button-bar .ds-button:not(:last-child):not(:only-child) {
+        margin-right: 0;
+        border-right: 0;
+    }
+    .ds-box {
+        background: var(--ds-dropdown-background);
+        box-shadow: var(--ds-shadow-medium);
+        border-radius: var(--ds-box-radius);
+    }
+    .ds-box {
+      position: relative;
+    }
+    .ds-box-close {
+      position: absolute;
+      display: block;
+      top: 0;
+      right: 0;
+      margin: 0;
+      font-size: 2em;
+      padding: 0;
+      cursor: pointer;
+    }
+    .ds-box-close:focus,
+    .ds-box-close:hover {
+      background-color: var(--grey-light);
     }
     .ds-dropdown {
         margin: 0;
@@ -533,7 +696,7 @@
         border-radius: var(--ds-box-radius);
         bottom: 100px;
         right: 60px;
-        padding: 1em;
+        padding: 0;
         z-index: 1000000;
     }
     .ds-dropdown-nav::before {
@@ -558,16 +721,74 @@
     .ds-dropdown-list {
         list-style: none;
         margin: 0;
-        padding: calc(0.25 * var(--ds-spacing)) calc(0.5 * var(--ds-spacing));
+        padding: calc(0.5 * var(--ds-spacing)) 0;
     }
-    .ds-dropdown-item {
+    .ds-dropdown-list li {
         list-style: none;
         margin: 0;
         padding: 0;
-        cursor: pointer;
     }
+    .ds-dropdown-item {
+        margin: 0;
+        padding: 0 calc(0.75 * var(--ds-spacing));
+        cursor: pointer;
+        display: block;
+    }
+    .ds-dropdown-item:focus,
     .ds-dropdown-item:hover {
-        color: #009c55;
+        color: var(--highlight-dark);
+        background-color: var(--grey-light);
+    }
+    .ds-dropdown-divider,
+    .ds-dropdown-list .ds-dropdown-divider {
+        border-top: 1px solid #666;
+        border-bottom: 1px solid #eee;
+        margin: calc(0.25 * var(--ds-spacing)) 0;
+    }
+    .ds-backdrop {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .ds-backdrop.visible {
+        z-index: 101;
+    }
+    .ds-dialog {
+      visibility: hidden;
+      z-index: -1;
+      transform: scale(.7);
+      opacity: 0;
+      transition: all .3s,z-index .3s step-end;
+    }
+    .ds-dialog.visible,
+    .visible > .ds-dialog {
+      visibility: visible;
+      transform: scale(1);
+      opacity: 1;
+      z-index: 101;
+      transition: all .3s,z-index .3s step-start;
+    }
+    .ds-dialog-container {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+    .ds-center {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .ds-center-middle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     </style>
     <!-- edit-mode -->
@@ -646,7 +867,21 @@
         simplyApp = simply.app({
           /* Actions */
           actions: {
+            hhsAddSlideChangeListener : function() {
+              console.log("Add slide change listener for HHS")
+              document.addEventListener("simply-data-changed", function(event) {
+                console.log(event.data.dataBinding)
+                if (
+                  (event.data.dataBinding.parentKey == "/") && 
+                  (event.data.dataBinding.key == "slide")
+                ) {
+                  console.log("Updating HHS state to " + editor.pageData.slide)
+                  simplyHHS.ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
+                }
+              })
+            },
             hhsConnectSpace : async function(words) {
+              simplyApp.actions.hhsAddSlideChangeListener()
               let resources = await simplyHHS.init()
               let space = HHS.Space.fromWordCode(words, resources) // replace 3 words;
               let ds = await space.getEntryPoint()
@@ -674,6 +909,7 @@
               ds.setResources(resources)
               ds.startSync()
               // await this.app.actions.hhsConnectSpace(editor.pageData.hhsWords)
+              simplyApp.actions.hhsAddSlideChangeListener()
               ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
               simplyHHS.ds = ds
               console.log(document.location.origin + document.location.pathname + "#words/" + editor.pageData.hhsWords.join("/"))
@@ -717,82 +953,96 @@
                 helper.classList.add('simply-visible')
               }
             },
-            updateNext : async function() {
-              let nextSlidePreview = document.querySelector('.slides.nextSlide');
+            showHelperMenu : async function() {
+              document.getElementById('SimplyPresentState').checked = true
+            },
+            setNextSlide : async function() {
+              let nextSlidePreview = document.querySelector('.slides.slides-next');
               if (nextSlidePreview) {
-                let nextSlide = nextSlidePreview.querySelector('.slide:nth-child('+(slide+1)+')')
+                let nextSlide = nextSlidePreview.querySelector('.slide:nth-child('+(parseInt(editor.pageData.slide)+1)+')')
                 if (nextSlide) {
                   nextSlide.scrollIntoView()
                 }
               }
             },
+            share : async function() {
+              this.app.actions.hhsCreateSpace()
+              document.getElementById('SimplyPresentShare').classList.add('visible');
+            },
             gotoSlide : async function(slide) {
               if (slide===editor.pageData.slide) {
               return
               }
-              editor.pageData.slide = slide
-              let slides = document.querySelector('.slides-present')
-              slide  = Math.max(1, Math.min(slide, slides.querySelectorAll('.slide').length))
-              window.location.hash='#slide-'+slide
-              slides.scrollLeft = document.getElementById('slide-'+slide).offsetLeft
-              simplyApp.actions.updateNext()
-              simplyHHS.ds.setValue(JSON.stringify({slide:slide}))
+              editor.pageData.slide = slide // also triggers an update to HHS state;
+              simplyApp.actions.setSlide()
+              simplyApp.actions.setNextSlide()
+              simplyApp.actions.setWindowHash()
+              // simplyApp.actions.setTimerSlide()
+              // simplyApp.actions.setNotesSlide
               return true
             },
             initSlides : async function() {
               function isScrolledIntoView(el) {
-                  var rect = el.getBoundingClientRect();
-                  return (rect.left >= 0) && (rect.right <= window.innerWidth);
+                var rect = el.getBoundingClientRect()
+                return (rect.left >= 0) && (rect.right <= window.innerWidth)
               }
             
               function throttle( callbackFunction, intervalTime ) {
-                    var eventId = 0;
-                    return function() {
-                        var myArguments = arguments;
-                        var me = this;
-                        if ( eventId ) {
-                            return;
-                        } else {
-                            eventId = window.setTimeout( function() {
-                                callbackFunction.apply(me, myArguments);
-                                eventId = 0;
-                            }, intervalTime );
-                        }
-                    };
+                var eventId = 0
+                return function() {
+                  var myArguments = arguments;
+                  var me = this;
+                  if ( eventId ) {
+                    return
+                  } else {
+                    eventId = window.setTimeout( function() {
+                      callbackFunction.apply(me, myArguments)
+                      eventId = 0
+                    }, intervalTime )
+                  }
+                }
               }
             
-                let slideQuery = '.slides-present .slide:not(.welcome-slide)'
-                var slides = document.body.querySelectorAll(slideQuery);
-                var count = 1;
-                var hash = window.location.hash.substr(1);
-                slides.forEach(function(slide) {
-                    slide.id='slide-'+count;
-                    count++;
-                    if (hash == slide.id) {
-                      slide.scrollIntoView();
-                    }
-                });
+              let slideQuery = '.slides-present .slide:not(.welcome-slide)'
+              var slides = document.body.querySelectorAll(slideQuery)
+              var count = 1
+              var hash = window.location.hash.substr(1)
+              slides.forEach(function(slide) {
+                slide.id='slide-'+count
+              slide.slide = count
+                count++
+                if (hash == slide.id) {
+                  slide.scrollIntoView()
+                }
+              })
             
               window.addEventListener('scroll', throttle(
                 function() {
                   var slides = document.body.querySelectorAll(slideQuery)
                   for (var i=0, l=slides.length; i<l; i++) {
                     if (isScrolledIntoView(slides.item(i))) {
-                                history.replaceState({}, '', '#'+slides.item(i).id)
-                                simplyApp.actions.updateSlide()
+                      // history.replaceState({}, '', '#'+slides.item(i).id)
+                      simplyApp.actions.gotoSlide(slides.item(i).slide)
                       return
                     }
                   }
                 }, 
                 500
               ), true)
-              },
-            updateSlide : async function() {
-              simplyApp.actions.updateNext()
-              simplyHHS.ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
+            },
+            setSlide : function() {
+              let slides = document.querySelector('.slides-present')
+              slide  = Math.max(1, Math.min(editor.pageData.slide, slides.querySelectorAll('.slide').length))
+              slides.scrollLeft = document.getElementById('slide-'+slide).offsetLeft
+            },
+            setWindowHash : function() {
+              // FIXME: Should we set it differently for different page types?
+              if (editor.pageData.page == "slides") {
+                window.location.hash='#slide-'+editor.pageData.slide
+              }
             },
             start : async function() {
-              this.app.keyboard = slidesKeyboard
+              this.app.keyboard = simply.keyboard(this.app, slidesKeyboard)
               await this.call('initMenu')
               await this.call('initSlides')
             },
@@ -833,7 +1083,10 @@
             },
             edit : async function() {
               window.location.hash='#simply-edit'
-              simplyApp.actions.hideHelperMenu()
+              this.app.actions.hideHelperMenu()
+            },
+            hideMenu : async function() {
+              this.app.actions.hideHelperMenu()
             },
             present : async function() {
               if (simplyPresentConnection) {
@@ -845,26 +1098,21 @@
                 simplyPresentConnection = connection
                 document.body.setAttribute('data-simply-present',true)
               }
-              simplyApp.actions.hideHelperMenu()
+              this.app.actions.hideHelperMenu()
+            },
+            showMenu : async function() {
+              this.app.actions.showHelperMenu()
             },
             share : function(el) {
-              simplyApp.actions.hhsCreateSpace()
+              this.app.actions.share()
             },
             nextSlide : async function() {
-              let slide=1
-              if (window.location.hash.substr(0,7)=='#slide-') {
-                slide = parseInt(window.location.hash.substr(7)) || 1
-              }
-              let max = document.querySelectorAll('main.slides .slide').length;
-              slide = Math.min(max, slide+1)
+              let max = editor.pageData.slides.length
+              slide = Math.min(max, editor.pageData.slide + 1)
               return simplyApp.actions.gotoSlide(slide)
             },
             prevSlide : async function() {
-              let slide=1
-              if (window.location.hash.substr(0,7)=='#slide-') {
-                slide = parseInt(window.location.hash.substr(7)) || 1
-              }
-              slide = Math.max(1, slide-1)
+              slide = Math.max(1, editor.pageData.slide - 1)
               return simplyApp.actions.gotoSlide(slide)
             },
             pauseTimer : async function() {
@@ -884,22 +1132,28 @@
               simplyApp.actions.hhsConnectSpace([params.word1, params.word2, params.word3])
             },
             "#share" : function(params) {
-              simplyApp.actions.hhsCreateSpace()
+              simplyApp.actions.share()
             },
-            "#next-slide" : function(params) {
+            "#next-slide" : async function(params) {
               editor.pageData.page = 'next-slide'
+              await simplyApp.actions.start()
             },
-            "#present" : function(params) {
-                editor.pageData.page = "present"
+            "#present" : async function(params) {
+              editor.pageData.page = "present"
+              await simplyApp.actions.start()
+              simplyApp.actions.gotoSlide(1)
             },
-            "#slides" : function(params) {
+            "#slides" : async function(params) {
               editor.pageData.page='slides'
+              await simplyApp.actions.start()
             },
-            "#timer" : function(params) {
-              editor.pageData.page = 'timer';
+            "#timer" : async function(params) {
+              editor.pageData.page = 'timer'
+              await simplyApp.actions.start()
             },
-            "/" : function(params) {
+            "/" : async function(params) {
               editor.pageData.page='slides'
+              await simplyApp.actions.start()
             }
           }
           /* /Routes */
@@ -1071,18 +1325,20 @@
     <!-- /Body HTML -->
     <!-- Component HTML templates -->
     <template id="menu">
-      <label for="SimplyPresentState" id="SimplyPresentButton" class="ds-dropdown">
-          <img class="simplyPresentLogo" src="https://cdn.simplyedit.io/graphics/simply-present-centered.svg" alt="SimplyPresent">
-      </label>
+      <button data-simply-command="showMenu" id="SimplyPresentButton" class="ds-button ds-button-naked ds-dropdown">
+        <img class="simplyPresentLogo" src="https://cdn.simplyedit.io/graphics/simply-present-centered.svg" alt="SimplyPresent">
+      </button>
       <input id="SimplyPresentState" type="checkbox" class="ds-dropdown-state">
       <nav class="ds-dropdown-nav">
-          <ul class="ds-dropdown-list">
-              <li class="ds-dropdown-item" data-simply-command="edit">Edit</li>
-              <li class="ds-dropdown-item" data-simply-command="present">Present</li>
-              <li class="ds-dropdown-item" data-simply-command="about">About</li>
-              <li class="ds-dropdown-item" data-simply-command="share">Share</li>
-          </ul>
+        <ul class="ds-dropdown-list">
+          <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="present">Present</a></li>
+          <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="share">Share</a></li>
+          <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="edit">Edit</a></li>
+          <li class="ds-dropdown-divider"></li>
+          <li><a class="ds-dropdown-item" tabindex="0" data-simply-command="about">About</a></li>
+        </ul>
       </nav>
+      <div id="SimplyPresentBackdrop" data-simply-command="hideMenu"></div>
     </template>
     <template id="next-slide">
       <div class="slides slides-next" data-simply-list="slides">
@@ -1095,9 +1351,17 @@
       </div>
     </template>
     <template id="sharing">
-      <div>
-        <button data-simply-command="share">Share</button>
-        <div data-simply-field="hhsWords" data-simply-transformer="wordsLink"></div>
+      <div class="ds-dialog-container">
+        <div id="SimplyPresentShare" class="simplypresent-share ds-box ds-dialog visible">
+          <a class="ds-box-close" data-simply-command="closeSharing">
+            <svg class="ds-icon ds-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+              <line x1="15" y1="15" x2="25" y2="25" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-miterlimit="10"></line>
+              <line x1="25" y1="15" x2="15" y2="25" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-miterlimit="10"></line>
+            </svg>
+          </a>
+          <button class="ds-button ds-button-default" data-simply-command="copySharing">Copy</button>
+          <a data-simply-field="hhsWords" data-simply-transformer="wordsLink"></a>
+        </div>
       </div>
     </template>
     <template id="columns">
@@ -1207,6 +1471,7 @@
     </template>
     <!-- /Component HTML templates -->
     <div is="simply-component" rel="menu"></div>
+    <div is="simply-component" rel="sharing"></div>
     <main data-simply-field="page" data-simply-content="template">
     
     <!-- Page HTML templates -->
@@ -1249,7 +1514,9 @@
       "wordsLink" : {
         render : function(data) {
            this.originalValue = data
-           return document.location.origin + document.location.pathname + "#words/" + data.join("/")
+           let value = document.location.origin + document.location.pathname + "#words/" + data.join("/")
+           return { href: value, innerHTML: value }
+            
           },
         extract : function(data) {
             return this.originalValue
@@ -1316,6 +1583,8 @@
       
     <!-- Foot HTML -->
     <!-- hhs -->
+    <!-- This field is needed to have a databinding we can react on -->
+    <div class="slide" style="display: none" data-simply-field="slide">1</div>
     <script src="https://cdn.jsdelivr.net/npm/@hyper-hyper-space/core@0.12.0/dist-browser/hhs.min.js"></script>
     <script>
     const simplyHHS = (function() {
@@ -1478,7 +1747,9 @@
             ArrowLeft: keyPrev,
             PageDown: keyNext,
             ArrowDown: keyNext,
-            ArrowRight: keyNext
+            ArrowRight: keyNext,
+            Escape: () => { simplyApp.actions.hideHelperMenu() },
+            Space: () => { if (document.body.dataset.simplyEdit) { return; } simplyApp.actions.showHelperMenu() }
           }
         }
       })()
@@ -1549,13 +1820,6 @@
     });
     </script>
     <!-- /Foot HTML -->
-  <script>
-    document.addEventListener('simply-content-loaded',() => {
-      window.setTimeout(() => {
-        simplyApp.actions.start()
-      },1)
-    })
-  </script>
   </body>
 </html>
   

@@ -23,7 +23,9 @@
         ArrowLeft: keyPrev,
         PageDown: keyNext,
         ArrowDown: keyNext,
-        ArrowRight: keyNext
+        ArrowRight: keyNext,
+        Escape: () => { simplyApp.actions.hideHelperMenu() },
+        Space: () => { if (document.body.dataset.simplyEdit) { return; } simplyApp.actions.showHelperMenu() }
       }
     }
   })()

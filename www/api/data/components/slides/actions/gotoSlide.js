@@ -2,12 +2,11 @@ async function(slide) {
   if (slide===editor.pageData.slide) {
 	return
   }
-  editor.pageData.slide = slide
-  let slides = document.querySelector('.slides-present')
-  slide  = Math.max(1, Math.min(slide, slides.querySelectorAll('.slide').length))
-  window.location.hash='#slide-'+slide
-  slides.scrollLeft = document.getElementById('slide-'+slide).offsetLeft
-  simplyApp.actions.updateNext()
-  simplyHHS.ds.setValue(JSON.stringify({slide:slide}))
+  editor.pageData.slide = slide // also triggers an update to HHS state;
+  simplyApp.actions.setSlide()
+  simplyApp.actions.setNextSlide()
+  simplyApp.actions.setWindowHash()
+  // simplyApp.actions.setTimerSlide()
+  // simplyApp.actions.setNotesSlide
   return true
 }

@@ -1,0 +1,7 @@
+.simplypresent-share {
+  width: 70vw;
+  min-width: 500px;
+  max-width: 100%;
+  padding: var(--ds-spacing);
+  margin: 0 auto;
+}

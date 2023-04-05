@@ -13,7 +13,9 @@
     display: flex;
     bottom: 50px;
     right: 50px;
+    min-height: unset;
 }
+#SimplyPresentButton:focus,
 #SimplyPresentButton:hover {
     opacity: 1;
 }
@@ -23,4 +25,12 @@ body[data-simply-edit] #SimplyPresentButton {
 .simplyPresentLogo {
     width: 46px;
     margin-left: 1px;
+}
+#SimplyPresentBackdrop {
+    position: fixed;
+    z-index: 999998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

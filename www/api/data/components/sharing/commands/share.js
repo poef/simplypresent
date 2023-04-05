@@ -1,3 +1,3 @@
 function(el) {
-  simplyApp.actions.hhsCreateSpace()
+  this.app.actions.share()
 }

@@ -8,5 +8,5 @@ async function() {
     simplyPresentConnection = connection
     document.body.setAttribute('data-simply-present',true)
   }
-  simplyApp.actions.hideHelperMenu()
+  this.app.actions.hideHelperMenu()
 }

@@ -1,0 +1,28 @@
+<div class="slide-time-edit">
+  <div class="slide-edit-field">
+    <label>Allowed presentation time is 
+      <input type="number" data-simply-field="totalTime" data-simply-transformer="secondsToMinutes" value=10 min=0 step=5> minutes.
+      <br>
+      This allows <span data-simply-field="totalTime" data-simply-transformer="timePerSlide"></span> seconds per slide.
+    </label>
+  </div>
+</div>
+<div class="slides slides-edit" data-simply-list="slides" data-simply-sortable>
+  <template>
+    <div class="slide-edit">
+      <div data-simply-field="data-simply-template" data-simply-content="template">
+        <template data-simply-template="title" rel="title"></template>
+        <template data-simply-template="highlight" rel="highlight"></template>
+        <template data-simply-template="grid" rel="grid"></template>
+        <template data-simply-template="half-grid" rel="half-grid"></template>
+        <template data-simply-template="columns" rel="columns"></template>
+        <template data-simply-template="full" rel="full"></template>
+      </div>
+      <div class="slide-notes slide-edit-field">
+        <label>Speaker notes
+          <textarea data-simply-field="notes"></textarea>
+        </label>
+      </div>
+    </div> 
+  </template>
+</div>

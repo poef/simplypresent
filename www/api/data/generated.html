@@ -65,9 +65,6 @@
       .slides-present.simply-empty .welcome-slide {
         display: grid;
       }
-      body[data-simply-edit] .slides-present .welcome-slide {
-        display: none;
-      }
       /* 1-slides */
       body {
       	width: 100%;
@@ -233,22 +230,30 @@
       		padding: 2em 1em;
       	}
       }
-      /* 4-edit-mode */
+      /* 5-reduced-motion */
+      @media screen and (prefers-reduced-motion: reduce) { 
+      	scroll-behavior: initial;
+      }
+      /* 4. editmode */
       body[data-simply-edit] {
       	overflow-y: auto;
       }
-      body[data-simply-edit] .slides {
-      	overflow-y: auto;
-      	font-size: 1.1vw;
-      	display: block;
-      	scroll-snap-type: none;
+      .slides.slides-edit {
+        overflow-y: auto;
+        font-size: 1.1vw;
+        display: block;
+        scroll-snap-type: none;
+        overflow-x: auto;
       }
-      body[data-simply-edit] .slide {
-      	width: 49%;
-      	height: 50vh;
+      .slides-edit .slide-edit {
+        	width: 49%;
       	float: left;
       	margin: 0 0 0.5% 0.5%;
       	box-shadow: 2px 2px 5px #888;
+      }
+      .slides-edit .slide {
+      	width: 100%;
+      	height: 50vh;
       }
       .slide::before {
       	margin-top: 24px !important;
@@ -263,9 +268,47 @@
       .background-highlight[data-simply-field]:focus {
       	background: var(--highlight-background) !important;
       }
-      /* 5-reduced-motion */
-      @media screen and (prefers-reduced-motion: reduce) { 
-      	scroll-behavior: initial;
+      .slide-edit-field {
+        padding: 0.2em;
+      }
+      /* slide-notes-editmode */
+      .slides-edit .slide-notes label {
+        display: block;
+      }
+      .slides-edit .slide-notes textarea {
+        display: block;
+        width: 100%;
+        height: 6em;
+      }
+      /* slide-timer-editmode */
+      .slide-time-edit {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .slide-time-edit input {
+      	margin-left: 1em;
+      }
+      /* speaker-notes */
+      :root {
+        --speaker-notes-font: monospace;
+        --speaker-notes-font-size: 1.5em;
+        --speaker-notes-padding: 0.5em;
+      }
+      .slides-speaker-notes {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        font-family: var(--speaker-notes-font);
+        font-size: var(--speaker-notes-font-size);
+        overflow-y: hidden;
+      }
+      .slides-speaker-note {
+        height: 100%;
+        width: 100%;
+        padding: var(--speaker-notes-padding);
+        overflow: auto;
       }
       /* default */
       @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:400,400i,700,700i');
@@ -367,10 +410,10 @@
           --timer-border-radius: 3px;
           --timer-border-color: var(--support-dark);
         	--timer-box-padding: 0.5em;
-          --timer-current-color: var(--support-dark);
-          --timer-cursor-color: var(--highlight-dark);
+          --timer-current-color: var(--support-light);
+          --timer-cursor-color: #777;
           --timer-cursor-width: 4px;
-          --timer-padding: 2em;
+          --timer-padding: 0.5em;
           --timer-bar-color: var(--grey-light);
           --timer-cursor-marker-size: 10px;
       }
@@ -389,7 +432,7 @@
       	width: 100%;
       	list-style: none;
       	margin: 0;
-      	margin-top: 4em;
+      	margin-top: 1em;
           gap: 2px;
           border-radius: var(--timer-border-radius);
       }
@@ -407,26 +450,27 @@
       .slides-timer-slide.slides-timer-current {
       	background-color: var(--timer-current-color);
       }
-      .slides-timer-time input {
+      .slides-timer-time span {
       	display: block;
       	appearance: none;
       	border: 0;
       	font-size: 2em;
       	text-align:right;
       	width: 6em;
+        	color: black;
       }
-      .slides-timer-time {
+      .slides-timer-time.total-time {
       	position: absolute;
       	top: var(--timer-padding);
       	right: var(--timer-padding);
       	text-align:right;
       }
-      .slides-timer-slide .slides-timer-time {
+      .slides-timer-time.slide-time {
       	right: auto;
       	left: var(--timer-padding);
       	text-align:left;
       }
-      .slides-timer-slide .slides-timer-time input {
+      .slides-timer-time.slide-time span {
       	text-align:left;
       }
       .slides-timer-cursor {
@@ -437,6 +481,7 @@
           background-color: var(--timer-cursor-color);
       	margin-left: calc(var(--timer-padding) + var(--timer-box-padding) + var(--timer-border-size));
       	z-index:10;
+          transition: left 1s;
       }
       .slides-timer-cursor::before {
           content: "";
@@ -470,7 +515,8 @@
       }
       .slides-presentor > div {
         background-color: white;
-        overflow:hidden;
+        overflow: hidden;
+        position: relative;
       }
       .slides-presentor .left-main {
         grid-column: 1 / 3;
@@ -523,7 +569,7 @@
         --ds-button-primary-bg-color: var(--primary);
         --ds-button-primary-color: var(--primary-contrast);
         --ds-button-primary-border-color: var(--primary);
-        --ds-button-line-height: calc(var(--ds-line-height) * 1.5);
+        --ds-button-line-height: calc(var(--ds-line-height) * 1);
         --ds-button-shadow: var(--ds-shadow-tiny);
         --ds-button-shadow-hover: var(--ds-shadow-small);
         --ds-button-radius: 3px;
@@ -791,38 +837,6 @@
         justify-content: center;
     }
     </style>
-    <!-- edit-mode -->
-    <style>
-      body[data-simply-edit] {
-        overflow-y: auto;
-      }
-      body[data-simply-edit] .slides {
-        overflow-y: auto;
-        font-size: 1.1vw;
-        display: block;
-        scroll-snap-type: none;
-      }
-      body[data-simply-edit] .slide {
-        width: 49%;
-        height: 50vh;
-        float: left;
-        margin: 0 0 0.5% 0.5%;
-        box-shadow: 2px 2px 5px #888;
-      }
-      .slide::before {
-        margin-top: 24px !important;
-        right: 24px !important;
-        padding: 10px !important;
-        border-radius: 50% !important;
-        border: 0px !important;
-      }
-      .background-grey[data-simply-field]:focus {
-        background: var(--grey-background) !important;
-      }
-      .background-highlight[data-simply-field]:focus {
-        background: var(--highlight-background) !important;
-      }
-    </style>
     <!-- portrait-mode -->
     <style>
       @media (orientation: portrait) {
@@ -868,15 +882,22 @@
           /* Actions */
           actions: {
             hhsAddSlideChangeListener : function() {
-              console.log("Add slide change listener for HHS")
               document.addEventListener("simply-data-changed", function(event) {
-                console.log(event.data.dataBinding)
                 if (
                   (event.data.dataBinding.parentKey == "/") && 
-                  (event.data.dataBinding.key == "slide")
+                  (
+                    (event.data.dataBinding.key == "slide") || 
+                    (event.data.dataBinding.key == "timerStarted") ||
+                    (event.data.dataBinding.key == "isTimerPaused")
+                  )
                 ) {
-                  console.log("Updating HHS state to " + editor.pageData.slide)
-                  simplyHHS.ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
+                  if (editor.pageData.hhsCreator) {
+                    simplyHHS.ds.setValue(JSON.stringify({
+                      timerStarted : editor.pageData.timerStarted,
+                      isTimerPaused : editor.pageData.isTimerPaused,
+                      slide : editor.pageData.slide
+                    }))
+                  }
                 }
               })
             },
@@ -910,20 +931,28 @@
               ds.startSync()
               // await this.app.actions.hhsConnectSpace(editor.pageData.hhsWords)
               simplyApp.actions.hhsAddSlideChangeListener()
-              ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
               simplyHHS.ds = ds
+              simplyHHS.ds.setValue(JSON.stringify({
+                timerStarted : editor.pageData.timerStarted,
+                isTimerPaused : editor.pageData.isTimerPaused,
+                slide : editor.pageData.slide
+              }))
+            
               console.log(document.location.origin + document.location.pathname + "#words/" + editor.pageData.hhsWords.join("/"))
               return editor.pageData.hhsWords
             },
             hhsUpdateSpace : async function(ds) {
-              let data = ds.getValue();
-              console.log(data)
+              let data = ds.getValue()
               if (data) {
-                data = JSON.parse(data);
-                if (data.slide && !editor.pageData.creator) {
-            //      document.location.hash = data.slide;
-            //      editor.pageData.share = '';
-                  this.app.actions.gotoSlide(data.slide)
+                data = JSON.parse(data)
+                if (data['slide'] && !editor.pageData.hhsCreator) {
+                  this.app.actions.gotoSlide(data['slide'])
+                }
+                if (data['timerStarted'] && !editor.pageData.hhsCreator) {
+                  editor.pageData['timerStarted'] = data['timerStarted']
+                }
+                if (data['isTimerPaused'] && !editor.pageData.hhsCreator) {
+                  editor.pageData['isTimerPaused'] = data['isTimerPaused']
                 }
               }
             },
@@ -959,9 +988,12 @@
             setNextSlide : async function() {
               let nextSlidePreview = document.querySelector('.slides.slides-next');
               if (nextSlidePreview) {
+                let currentSlide = nextSlidePreview.querySelector('.slide:nth-child('+(parseInt(editor.pageData.slide))+')')
                 let nextSlide = nextSlidePreview.querySelector('.slide:nth-child('+(parseInt(editor.pageData.slide)+1)+')')
                 if (nextSlide) {
                   nextSlide.scrollIntoView()
+                } else {
+                  currentSlide.scrollIntoView() // we are at the last slide so we have no 'next' to show.
                 }
               }
             },
@@ -969,6 +1001,7 @@
               this.app.actions.hhsCreateSpace()
             },
             gotoSlide : async function(slide) {
+              slide = parseInt(slide)
               if (slide===editor.pageData.slide) {
               return
               }
@@ -976,8 +1009,8 @@
               simplyApp.actions.setSlide()
               simplyApp.actions.setNextSlide()
               simplyApp.actions.setWindowHash()
-              // simplyApp.actions.setTimerSlide()
-              // simplyApp.actions.setNotesSlide
+              simplyApp.actions.setTimerSlide()
+              simplyApp.actions.setSpeakerNotesSlide()
               return true
             },
             initSlides : async function() {
@@ -1003,6 +1036,9 @@
                 }
               }
             
+              if (editor.pageData.slide) {
+                editor.pageData.slide = parseInt(editor.pageData.slide)
+              }
               let slideQuery = '.slides-present .slide:not(.welcome-slide)'
               var slides = document.body.querySelectorAll(slideQuery)
               var count = 1
@@ -1032,40 +1068,81 @@
             },
             setSlide : function() {
               let slides = document.querySelector('.slides-present')
-              slide  = Math.max(1, Math.min(editor.pageData.slide, slides.querySelectorAll('.slide').length))
-              slides.scrollLeft = document.getElementById('slide-'+slide).offsetLeft
+              if (slides) {
+                slide  = Math.max(1, Math.min(editor.pageData.slide, slides.querySelectorAll('.slide').length))
+                slides.scrollLeft = document.getElementById('slide-'+slide).offsetLeft
+              }
             },
             setWindowHash : function() {
               // FIXME: Should we set it differently for different page types?
               if (editor.pageData.page == "slides") {
-                window.location.hash='#slide-'+editor.pageData.slide
+                window.location.hash='#slide/'+editor.pageData.slide
+              }
+            },
+            setSpeakerNotesSlide : function() {
+              document.querySelectorAll(".slides-speaker-notes-current").forEach(function(element) {
+                element.classList.remove("slides-speaker-notes-current")
+              })
+              let newSlide = document.querySelector(".slides-speaker-note:nth-child(" + editor.pageData.slide + ")")
+              if (newSlide) {
+                newSlide.classList.add("slides-speaker-notes-current")
+                newSlide.scrollIntoView()
               }
             },
             start : async function() {
+              this.app.started = true
               this.app.keyboard = simply.keyboard(this.app, slidesKeyboard)
               await this.call('initMenu')
               await this.call('initSlides')
             },
             pauseTimer : async function() {
-              this.app.view.timerPaused = true
+              editor.pageData.isTimerPaused = true
+            },
+            setTimerSlide : function() {
+              simplyApp.actions.startTimer()
+              document.querySelectorAll(".slides-timer-current").forEach(function(element) {
+                element.classList.remove("slides-timer-current")
+              })
+              let newSlide = document.querySelector(".slides-timer-slide:nth-child(" + editor.pageData.slide + ")")
+              if (newSlide) {
+                newSlide.classList.add("slides-timer-current")
+              }
             },
             startTimer : async function() {
-              if (!this.app.view.timerInterval) {
-                let timeLeft = parseInt(this.app.view.totalTime)
-                this.app.view.timerInterval = window.setInterval(() => {
-                  if (!timerPaused) {
-                    this.app.view['time-left'] = timeLeft--
-                  }
-                }, 1000)
-              } else if (this.app.view.timerPaused) {
-                this.app.view.timerPaused = false
+              if (!editor.pageData['timerStarted']) {
+                editor.pageData['timerStarted'] = new Date().toJSON()
+              }
+              if (!editor.pageData.timerInterval) {
+                editor.pageData['timerPauseDuration'] = 0
+                editor.pageData.timerInterval = window.setInterval(simplyApp.actions.timerInterval, 1000)
+              } else if (editor.pageData.isTimerPaused) {
+                editor.pageData.isTimerPaused = false
               }
             },
             stopTimer : async function() {
-              if (this.app.view.timerInterval) {
-                clearInterval(this.app.view.timerInterval)
-                this.app.view.timerInterval = null
+              if (editor.pageData.timerInterval) {
+                clearInterval(editor.pageData.timerInterval)
+                editor.pageData.timerInterval = null
               }
+            },
+            timerInterval : function() {
+              if (editor.pageData.isTimerPaused) {
+                editor.pageData['timerPauseDuration']++
+              }
+              let timeNow = new Date()
+              let timeStarted = new Date(editor.pageData['timerStarted'])
+              let timeSpent = parseInt((timeNow - timeStarted) / 1000) // javascript has ms times
+              timeSpent -= parseInt(editor.pageData.timerPauseDuration)
+            
+              let timePerSlide = parseInt(editor.pageData.totalTime / editor.pageData.slides.length)
+              let slidesElapsed = 0
+              editor.pageData.slides.forEach(function(entry, index) {
+                if (index < (editor.pageData.slide)) {
+                  slidesElapsed += timePerSlide
+                }
+              })
+              editor.pageData['total-time-left'] = editor.pageData.totalTime - timeSpent
+              editor.pageData['slide-time-left'] = slidesElapsed - timeSpent
             }
           },
           /* /Actions */
@@ -1106,9 +1183,9 @@
             showMenu : async function() {
               this.app.actions.showHelperMenu()
             },
-            copySharing : function(el) {
-              let shareLink = editor.transformers.wordsLink.render(editor.pageData.hhsWords)
-              navigator.clipboard.writeText(shareLink.href)
+            copyLink : function(el) {
+              let slidesLink = el.href
+              navigator.clipboard.writeText(slidesLink)
               alert("The link is now in your clipboard!")
             },
             share : function(el) {
@@ -1123,6 +1200,9 @@
               slide = Math.max(1, editor.pageData.slide - 1)
               return simplyApp.actions.gotoSlide(slide)
             },
+            resetTime : function(el) {
+              el.parentElement.querySelector("input").value=""
+            },
             pauseTimer : async function() {
               return this.actions.pauseTimer()
             },
@@ -1136,9 +1216,26 @@
           /* /Commands */
           /* Routes */
           routes: {
+            "#words/:word1/:word2/:word3/:nextHash" : async function(params) {
+              await simplyApp.actions.start()
+              await simplyApp.actions.hhsConnectSpace([params.word1, params.word2, params.word3])
+              document.location.hash=params.nextHash
+            },
             "#words/:word1/:word2/:word3" : async function(params) {
               await simplyApp.actions.start()
               simplyApp.actions.hhsConnectSpace([params.word1, params.word2, params.word3])
+              editor.pageData.page = 'slides'
+              simplyApp.actions.initSlides() 
+            },
+            "#slide/:slide/" : async function(params) {
+              editor.pageData.page = 'slides'
+                if (!simplyApp.started) {
+                    await simplyApp.actions.start()
+                }
+                if (!params.slide) {
+                params.slide=1;
+                }
+                simplyApp.actions.gotoSlide(parseInt(params.slide))
             },
             "#share" : function(params) {
               simplyApp.actions.share()
@@ -1146,6 +1243,7 @@
             "#next-slide" : async function(params) {
               editor.pageData.page = 'next-slide'
               await simplyApp.actions.start()
+              simplyApp.actions.gotoSlide(1)
             },
             "#present" : async function(params) {
               editor.pageData.page = "present"
@@ -1155,6 +1253,13 @@
             },
             "#slides" : async function(params) {
               editor.pageData.page='slides'
+              await simplyApp.actions.start()
+            },
+            "#simply-edit" : function(params) {
+              editor.pageData.page = "slides-editmode"
+            },
+            "#speaker-notes" : async function(params) {
+              editor.pageData.page = 'speaker-notes'
               await simplyApp.actions.start()
             },
             "#timer" : async function(params) {
@@ -1371,12 +1476,16 @@
              >
           <template data-simply-template="3">
             <div>
-              <a data-simply-field="hhsWords" data-simply-transformer="wordsLink"></a>
+              <a class="ds-button ds-button-default" data-simply-field="hhsWords" data-simply-content="fixed" data-simply-command="copyLink" data-simply-transformer="slidesLink">Slides</a>
+              <a class="ds-button ds-button-default" data-simply-field="hhsWords" data-simply-content="fixed" data-simply-command="copyLink" data-simply-transformer="nextSlideLink">Next slide</a>
+              <a class="ds-button ds-button-default" data-simply-field="hhsWords" data-simply-content="fixed" data-simply-command="copyLink" data-simply-transformer="timerLink">Timer</a>
+              <a class="ds-button ds-button-default" data-simply-field="hhsWords" data-simply-content="fixed" data-simply-command="copyLink" data-simply-transformer="speakerNotesLink">Speaker notes</a>
+              <br>
+              Click the button to copy the sharing URL.<br>
+              <a data-simply-field="hhsWords" data-simply-content="fixed" data-simply-command="copyLink" data-simply-transformer="slidesLink">
+                <span data-simply-field="hhsWords" data-simply-transformer="slidesLink"></span>
+              </a>
             </div>
-            <button class="ds-button ds-button-default" data-simply-command="copySharing">Copy</button>
-          </template>
-          <template data-simply-template="1">
-            <button class="ds-button ds-button-default" data-simply-command="share" >Start sharing</button> 
           </template>
           <template data-simply-template="0">
             <button class="ds-button ds-button-default" data-simply-command="share" >Start sharing</button> 
@@ -1469,24 +1578,62 @@
         </div>
       </section>
     </template>
+    <template id="slides-editmode">
+      <div class="slide-time-edit">
+        <div class="slide-edit-field">
+          <label>Allowed presentation time is 
+            <input type="number" data-simply-field="totalTime" data-simply-transformer="secondsToMinutes" value=10 min=0 step=5> minutes.
+            <br>
+            This allows <span data-simply-field="totalTime" data-simply-transformer="timePerSlide"></span> seconds per slide.
+          </label>
+        </div>
+      </div>
+      <div class="slides slides-edit" data-simply-list="slides" data-simply-sortable>
+        <template>
+          <div class="slide-edit">
+            <div data-simply-field="data-simply-template" data-simply-content="template">
+              <template data-simply-template="title" rel="title"></template>
+              <template data-simply-template="highlight" rel="highlight"></template>
+              <template data-simply-template="grid" rel="grid"></template>
+              <template data-simply-template="half-grid" rel="half-grid"></template>
+              <template data-simply-template="columns" rel="columns"></template>
+              <template data-simply-template="full" rel="full"></template>
+            </div>
+            <div class="slide-notes slide-edit-field">
+              <label>Speaker notes
+                <textarea data-simply-field="notes"></textarea>
+              </label>
+            </div>
+          </div> 
+        </template>
+      </div>
+    </template>
+    <template id="speaker-notes">
+      <div class="slides-speaker-notes" data-simply-list="slides">
+        <template>
+          <div class="slides-speaker-note" data-simply-field="notes"></div>
+        </template>
+      </div>
+    </template>
     <template id="timer">
       <div class="slides-timer">
       	<input class="hidden" data-simply-field="totalTime">
-      	<label class="slides-timer-time">
+      	<label class="slides-timer-time total-time">
       		Presentation time left
-      		<input type="text" data-simply-field="time-left" data-simply-transformer="secondsToTime" readonly>
+            <span data-simply-field="total-time-left" data-simply-transformer="secondsToTime"></span>
+      	</label>
+      	<label class="slides-timer-time slide-time">
+      		Slide time left
+            <span data-simply-field="slide-time-left" data-simply-transformer="secondsToTime"></span>
       	</label>
       	<ul class="slides-timer-slides" data-simply-list="slides">
       	<template>
       		<li class="slides-timer-slide" data-simply-field="time" data-simply-transformer="timeToSize" data-simply-content="fixed">
-      			<label class="slides-timer-time">
-      				Slide time left
-      				<input type="text" readonly data-simply-field="time-left" data-simply-transformer="secondsToTime">
-      			</label>
+      			<label class="slides-timer-time"></label>
       		</li>
       	</template>
       	</ul>
-      	<i class="slides-timer-cursor" data-simply-field="time-left" data-simply-transformer="timeToCursor"></i>
+      	<i class="slides-timer-cursor" data-simply-field="total-time-left" data-simply-transformer="timeToCursor"></i>
       </div>
     </template>
     <!-- /Component HTML templates -->
@@ -1503,7 +1650,7 @@
             <div is="simply-component" rel="slides"></div>
           </div>
           <div class="left-bottom">
-            (empty for now - speaker notes go here)
+            <div is="simply-component" rel="speaker-notes"></div>
           </div>
           <div class="right-top">
             <div is="simply-component" rel="next-slide"></div>
@@ -1518,6 +1665,12 @@
     </template>
     <template data-simply-template="slides">
         <div is="simply-component" rel="slides"></div>
+    </template>
+    <template data-simply-template="slides-editmode">
+        <div is="simply-component" rel="slides-editmode"></div>
+    </template>
+    <template data-simply-template="speaker-notes">
+        <div is="simply-component" rel="speaker-notes"></div>
     </template>
     <template data-simply-template="timer">
         <div is="simply-component" rel="timer"></div>
@@ -1539,14 +1692,80 @@
             return this.originalValue
           }
       },
+      "nextSlideLink" : {
+        render : function(data) {
+           this.originalValue = data
+           let value = editor.transformers.wordsLink.render(data)
+           value += "/#next-slide"
+           return value
+          },
+        extract : function(data) {
+            return this.originalValue
+          }
+      },
+      "slidesLink" : {
+        render : function(data) {
+           this.originalValue = data
+           let value = editor.transformers.wordsLink.render(data)
+           return value
+          },
+        extract : function(data) {
+            return this.originalValue
+          }
+      },
+      "speakerNotesLink" : {
+        render : function(data) {
+           this.originalValue = data
+           let value = editor.transformers.wordsLink.render(data)
+           value += "/#speaker-notes"
+           return value
+          },
+        extract : function(data) {
+            return this.originalValue
+          }
+      },
+      "timerLink" : {
+        render : function(data) {
+           this.originalValue = data
+           let value = editor.transformers.wordsLink.render(data)
+           value += "/#timer"
+           return value
+          },
+        extract : function(data) {
+            return this.originalValue
+          }
+      },
       "wordsLink" : {
         render : function(data) {
            this.originalValue = data
            let value = document.location.origin + document.location.pathname + "#words/" + data.join("/")
-           return { href: value, innerHTML: value }
+           return value
           },
         extract : function(data) {
             return this.originalValue
+          }
+      },
+      "secondsToMinutes" : {
+        render : function(data) {
+            return parseInt(data / 60)
+          },
+        extract : function(data) {
+            return data * 60
+          }
+      },
+      "timePerSlide" : {
+        render : function(data) {
+            this.originalData = data
+            if (!editor.pageData.slides) {
+              return data
+            }
+            let slidesCount = editor.pageData.slides.length
+            timePerSlide = parseInt(data / slidesCount)
+            return timePerSlide
+          }
+          ,
+        extract : function(data) {
+            return this.originalData
           }
       },
       "secondsToTime" : {

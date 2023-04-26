@@ -1,13 +1,20 @@
 function() {
-  console.log("Add slide change listener for HHS")
   document.addEventListener("simply-data-changed", function(event) {
-    console.log(event.data.dataBinding)
     if (
       (event.data.dataBinding.parentKey == "/") && 
-      (event.data.dataBinding.key == "slide")
+      (
+        (event.data.dataBinding.key == "slide") || 
+        (event.data.dataBinding.key == "timerStarted") ||
+        (event.data.dataBinding.key == "isTimerPaused")
+      )
     ) {
-      console.log("Updating HHS state to " + editor.pageData.slide)
-      simplyHHS.ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
+      if (editor.pageData.hhsCreator) {
+        simplyHHS.ds.setValue(JSON.stringify({
+          timerStarted : editor.pageData.timerStarted,
+          isTimerPaused : editor.pageData.isTimerPaused,
+          slide : editor.pageData.slide
+        }))
+      }
     }
   })
 }

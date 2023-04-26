@@ -1,12 +1,11 @@
 async function() {
-  if (!this.app.view.timerInterval) {
-    let timeLeft = parseInt(this.app.view.totalTime)
-    this.app.view.timerInterval = window.setInterval(() => {
-      if (!timerPaused) {
-        this.app.view['time-left'] = timeLeft--
-      }
-    }, 1000)
-  } else if (this.app.view.timerPaused) {
-    this.app.view.timerPaused = false
+  if (!editor.pageData['timerStarted']) {
+    editor.pageData['timerStarted'] = new Date().toJSON()
+  }
+  if (!editor.pageData.timerInterval) {
+    editor.pageData['timerPauseDuration'] = 0
+    editor.pageData.timerInterval = window.setInterval(simplyApp.actions.timerInterval, 1000)
+  } else if (editor.pageData.isTimerPaused) {
+    editor.pageData.isTimerPaused = false
   }
 }

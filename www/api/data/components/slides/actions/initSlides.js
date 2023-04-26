@@ -21,6 +21,9 @@ async function() {
     }
   }
 
+  if (editor.pageData.slide) {
+    editor.pageData.slide = parseInt(editor.pageData.slide)
+  }
   let slideQuery = '.slides-present .slide:not(.welcome-slide)'
   var slides = document.body.querySelectorAll(slideQuery)
   var count = 1

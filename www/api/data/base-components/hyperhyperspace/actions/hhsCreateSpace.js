@@ -10,8 +10,13 @@ async function() {
   ds.startSync()
   // await this.app.actions.hhsConnectSpace(editor.pageData.hhsWords)
   simplyApp.actions.hhsAddSlideChangeListener()
-  ds.setValue(JSON.stringify({slide:editor.pageData.slide}))
   simplyHHS.ds = ds
+  simplyHHS.ds.setValue(JSON.stringify({
+    timerStarted : editor.pageData.timerStarted,
+    isTimerPaused : editor.pageData.isTimerPaused,
+    slide : editor.pageData.slide
+  }))
+
   console.log(document.location.origin + document.location.pathname + "#words/" + editor.pageData.hhsWords.join("/"))
   return editor.pageData.hhsWords
 }

@@ -1,7 +1,8 @@
 {
   "totalTime":120,
   "slides":[
-    {"time":30},{},{"time":60, "time-left":20}
+    {},{},{}
   ],
-  "time-left":120
+  "slide-time-left": 30,
+  "total-time-left":120
 }

@@ -1,6 +1,6 @@
 async function() {
-  if (this.app.view.timerInterval) {
-    clearInterval(this.app.view.timerInterval)
-    this.app.view.timerInterval = null
+  if (editor.pageData.timerInterval) {
+    clearInterval(editor.pageData.timerInterval)
+    editor.pageData.timerInterval = null
   }
 }

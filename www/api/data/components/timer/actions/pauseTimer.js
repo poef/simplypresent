@@ -1,3 +1,3 @@
 async function() {
-  this.app.view.timerPaused = true
+  editor.pageData.isTimerPaused = true
 }

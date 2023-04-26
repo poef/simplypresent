@@ -12,6 +12,3 @@
 .slides-present.simply-empty .welcome-slide {
   display: grid;
 }
-body[data-simply-edit] .slides-present .welcome-slide {
-  display: none;
-}

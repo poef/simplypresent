@@ -287,6 +287,9 @@
             body[data-simply-edit] {
       	overflow-y: auto;
       }
+      .slides-editmode-options {
+        display: none;
+      }
       .slides.slides-edit {
         overflow-y: auto;
         font-size: 1.1vw;
@@ -294,15 +297,18 @@
         scroll-snap-type: none;
         overflow-x: auto;
       }
-      .slides-edit .slide-edit {
-        	width: 49%;
+      .slide-edit .slides-editmode-options {
+        display: block;
+      }
+      .slides-edit .slide {
+      	height: 50vh;
       	float: left;
       	margin: 0 0 0.5% 0.5%;
       	box-shadow: 2px 2px 5px #888;
       }
-      .slides-edit .slide {
-      	width: 100%;
-      	height: 50vh;
+      .slides-edit .slide-edit {
+        	width: 49%;
+          height: auto;
       }
       .slide::before {
       	margin-top: 24px !important;
@@ -319,6 +325,10 @@
       }
       .slide-edit-field {
         padding: 0.2em;
+      }
+      [data-simply-readonly] {
+        user-select: none;
+        outline: 0 !important;
       }
                       
                     
@@ -1488,12 +1498,6 @@
                         "#timer" : async function(params) {
               editor.pageData.page = 'timer'
               await simplyApp.actions.start()
-            },
-      
-                    
-                        "/" : async function(params) {
-              editor.pageData.page='slides'
-              await simplyApp.actions.start()
             }
       
                     
@@ -1868,34 +1872,82 @@
         </template>
       
                     
+              <template id="columns-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="columns"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
+      </div>
+        </template>
+      
+                    
+              <template id="full-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="full"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
+      </div>
+        </template>
+      
+                    
+              <template id="grid-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="grid"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
+      </div>
+        </template>
+      
+                    
+              <template id="half-grid-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="half-grid"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
+      </div>
+        </template>
+      
+                    
+              <template id="highlight-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="highlight"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
+      </div>
+        </template>
+      
+                    
+              <template id="slide-editmode-options">
+            <div class="slide-editmode-options">
+        <div class="slide-notes slide-edit-field">
+          <label>Speaker notes
+            <textarea data-simply-field="notes"></textarea>
+          </label>
+        </div>
+      </div>
+        </template>
+      
+                    
               <template id="slides-editmode">
             <div class="slide-time-edit">
         <div class="slide-edit-field">
           <label>Allowed presentation time is 
             <input type="number" data-simply-field="totalTime" data-simply-transformer="secondsToMinutes" value=10 min=0 step=5> minutes.
             <br>
-            This allows <span data-simply-field="totalTime" data-simply-transformer="timePerSlide"></span> seconds per slide.
+            This allows <span data-simply-field="totalTime" data-simply-transformer="timePerSlide" data-simply-readonly></span> seconds per slide.
           </label>
         </div>
       </div>
       <div class="slides slides-edit" data-simply-list="slides" data-simply-sortable>
-        <template>
-          <div class="slide-edit">
-            <div data-simply-field="data-simply-template" data-simply-content="template">
-              <template data-simply-template="title" rel="title"></template>
-              <template data-simply-template="highlight" rel="highlight"></template>
-              <template data-simply-template="grid" rel="grid"></template>
-              <template data-simply-template="half-grid" rel="half-grid"></template>
-              <template data-simply-template="columns" rel="columns"></template>
-              <template data-simply-template="full" rel="full"></template>
-            </div>
-            <div class="slide-notes slide-edit-field">
-              <label>Speaker notes
-                <textarea data-simply-field="notes"></textarea>
-              </label>
-            </div>
-          </div> 
+        <template data-simply-template="title" rel="title-edit"></template>
+        <template data-simply-template="highlight" rel="highlight-edit"></template>
+        <template data-simply-template="grid" rel="grid-edit"></template>
+        <template data-simply-template="half-grid" rel="half-grid-edit"></template>
+        <template data-simply-template="columns" rel="columns-edit"></template>
+        <template data-simply-template="full" rel="full-edit"></template>
+      </div>
         </template>
+      
+                    
+              <template id="title-edit">
+            <div class="slide slide-edit">
+        <div is="simply-component" rel="title"></div>
+        <div is="simply-component" rel="slide-editmode-options"></div>
       </div>
         </template>
       
@@ -1994,7 +2046,7 @@
       
         
           </main>
-        <script src="https://unpkg.com/simplyview@2.0.2/dist/simply.everything.js"></script>
+        <script src="https://unpkg.com/simplyview@2.0.3/dist/simply.everything.js"></script>
   <script src="https://canary.simplyedit.io/1/simply-edit.js" data-api-key="muze" data-simply-images="img/" data-simply-storage="solidStorage"></script>
   
       
@@ -2389,7 +2441,7 @@
     				}
     			})
     		}
-    		if (navigator.presentation.receiver) {
+    		if (navigator.presentation && navigator.presentation.receiver) {
     			navigator.presentation.receiver.connectionList.then(list => {
     				list.connections.map(connection => addConnection(connection))
     				list.addEventListener('connectionavailable', (event) => {
@@ -2426,11 +2478,25 @@
         editor.baseURL = "https://canary.simplyedit.io/1/muze/";
         editor.baseURLClean = "https://canary.simplyedit.io/1/";
     	editor.editmode.toolbars = [
-    		"https://canary.simplyedit.io/1/muze/simply/toolbar.simply-basepack.html",
-    		"https://canary.simplyedit.io/1/muze/simply/plugin.simply-scaler.html",
-    		"https://canary.simplyedit.io/1/muze/simply/plugin.simply-baseurl.html"
+    		"https://yvo.muze.nl/simply-edit/simply/toolbar.simply-basepack.html",
+    		"https://yvo.muze.nl/simply-edit/simply/plugin.simply-scaler.html",
+    		"https://yvo.muze.nl/simply-edit/simply/plugin.simply-baseurl.html"
     	];
     });
+    </script>
+      
+                    
+              <!-- start -->
+          <script>
+      simply.route.init({
+        root: document.location.pathname
+      });
+      document.addEventListener('simply-content-loaded', function() {
+        editor.pageData.page='slides'
+        window.setTimeout(function() {
+            simplyApp.actions.start()
+        },10);
+      })
     </script>
       
                     

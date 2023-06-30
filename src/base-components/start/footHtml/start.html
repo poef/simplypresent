@@ -1,0 +1,11 @@
+<script>
+  simply.route.init({
+    root: document.location.pathname
+  });
+  document.addEventListener('simply-content-loaded', function() {
+    editor.pageData.page='slides'
+    window.setTimeout(function() {
+        simplyApp.actions.start()
+    },10);
+  })
+</script>

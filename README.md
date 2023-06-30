@@ -1,18 +1,12 @@
-# Initial setup
-Before starting the SimplyCode project, you need to do a few things before SimplyCode can work:
+# SimplyPresent
 
-1. Change group to muze of all files and directories from the root folder
+SimplyPresent is a Solid Web Application made with SimplyCode.
+To start working on SimplyPresent, cd to the src/ directory
+and start ./simplycode.sh
 
-2. Change ownership and group to www-data
-change the owner and group to www-data of the directories:
-- www/data
-- www/files
-- www/img
-- www/api/data
+This will startup SimplyCode as a docker image. Read the output
+to find the URL to open.
 
-## Usage of this skeleton
-When cloning this repo, you want to remove the remote origin by removing the .git/ directory and creating a new .git with `git init` .
-
-This will ensure that you won't push any changes to your new project in this repository.
-
-Another option is to fork this repository and work from that version.
+If you just want to use SimplyPresent, you can copy the dist/index.html 
+file into a Solid Data Pod. Then open that URL in a browser to edit the
+slides.

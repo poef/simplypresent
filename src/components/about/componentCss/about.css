@@ -8,18 +8,25 @@
   grid-template-columns: 50% 50%;
   box-shadow: var(--ds-shadow-large);
   border-radius: 10px;
+  border: 0;
   margin-top: 10vh;
 }
 .about[open] {
   display: grid;
+  z-index: 1000;
+}
+dialog::backdrop {
+  background: rgba(0,0,0,0.5);
 }
 .about-close {
   background: white;
   width: 2em;
   height: 2em;
   position: absolute;
-  top: -1em;
-  right: -1em;
-  border: 2px solid black;
-  border-radius: 50% 50%;
+  top: 0em;
+  right: 0em;
+  border-radius: 0 10px 0 10px;
+  cursor: pointer;
+  border: 0;
+  box-shadow: var(--ds-shadow-small);
 }

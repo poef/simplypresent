@@ -1,3 +1,3 @@
 function(el) {
-  el.closest('dialog').removeAttribute('open');
+  el.closest('dialog').close();
 }

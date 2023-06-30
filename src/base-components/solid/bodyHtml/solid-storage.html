@@ -13,7 +13,11 @@ var solidStorage = (function() {
 
   return {
     init : function(endpoint) {
-      this.endpoint = endpoint || window.location.href.substring(0, window.location.href.lastIndexOf('/')+1);
+      this.endpoint = endpoint
+      if (!this.endpoint) {
+         this.endpoint = new URL(window.location.pathname, window.location.href);
+         this.endpoint = this.endpoint.href.substring(0, this.endpoint.href.lastIndexOf('/')+1);
+      }
       this.dataPath = "data.json";
       this.imagesEndpoint = endpoint + "img/";
       this.sitemap = editor.storageConnectors.default.sitemap;
